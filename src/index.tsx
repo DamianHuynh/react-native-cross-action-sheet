@@ -1,20 +1,112 @@
-import { NativeModules, Platform } from 'react-native';
+import { ActionSheetIOSOptions, Platform } from 'react-native';
+import { ActionSheetCancelledError } from './ActionSheetCancelledError';
+import { CrossActionSheet } from './ActionSheetModule';
 
-const LINKING_ERROR =
-  `The package 'react-native-cross-action-sheet' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo managed workflow\n';
+export interface ActionSheetOptions {
+  title?: string;
+  message?: string;
+  options: {
+    destructive?: boolean;
+    text: string;
+    onPress: () => void | Promise<void>;
+  }[];
+  cancel?:
+    | {
+        text?: string;
+        onPress?: () => void | Promise<void>;
+      }
+    | false;
+  tintColor?: string;
+  anchor?: number;
+}
 
-const CrossActionSheet = NativeModules.CrossActionSheet  ? NativeModules.CrossActionSheet  : new Proxy(
-      {},
+async function androidOptions(opt: ActionSheetOptions) {
+  const index = await CrossActionSheet.options(
+    opt.title ?? null,
+    opt.message ?? null,
+    opt.cancel === false ? null : opt.cancel?.text ? opt.cancel.text : 'Cancel',
+    opt.options.map((it) => it.text),
+    opt.options.findIndex((it) => it.destructive),
+    opt.tintColor ?? null
+  );
+  if (index === -1) {
+    if (opt.cancel && !opt.cancel.onPress) {
+      opt.cancel.onPress = () => {};
+    }
+    if (opt.cancel && opt.cancel.onPress) {
+      await opt.cancel?.onPress();
+    } else {
+      throw new ActionSheetCancelledError();
+    }
+  } else {
+    await opt.options[index]?.onPress();
+  }
+}
+
+async function iosOptions(opt: ActionSheetOptions) {
+  const options = opt.options.map<string>((it) => it.text);
+  const cancel =
+    opt.cancel === false ? null : opt.cancel?.text ? opt.cancel.text : 'Cancel';
+  return new Promise((res, rej) => {
+    CrossActionSheet.showActionSheetWithOptions(
       {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
+        title: opt.title,
+        message: opt.message,
+        options: cancel ? [...options, cancel] : options,
+        destructiveButtonIndex: opt.options.findIndex((it) => it.destructive),
+        cancelButtonIndex: cancel ? options.length : undefined,
+        tintColor: opt.tintColor,
+        anchor: opt.anchor,
+      },
+      async (buttonIndex: number) => {
+        if (opt.cancel && !opt.cancel.onPress) {
+          opt.cancel.onPress = () => {};
+        }
+        if (cancel && buttonIndex === options.length) {
+          if (opt.cancel && opt.cancel.onPress) {
+            res(await opt.cancel?.onPress());
+          } else {
+            rej(new ActionSheetCancelledError());
+          }
+        } else {
+          res(opt.options[buttonIndex]?.onPress());
+        }
       }
     );
-
-export function multiply(a: number, b: number): Promise<number> {
-  return CrossActionSheet.multiply(a, b);
+  });
 }
+
+const showActionSheetWithOptions = (
+  options: ActionSheetIOSOptions,
+  callback: (buttonIndex: number) => void
+) => {
+  if (Platform.OS === 'android') {
+    CrossActionSheet.showActionSheetWithOptions(options, callback);
+  } else if (Platform.OS === 'ios') {
+    CrossActionSheet.showActionSheetWithOptions(options, callback);
+  } else {
+    throw Error('Unsupported OS. Only Android or iOS is allowed');
+  }
+};
+
+const options = async (opt: ActionSheetOptions) => {
+  if (Platform.OS === 'android') {
+    await androidOptions(opt);
+  } else if (Platform.OS === 'ios') {
+    await iosOptions(opt);
+  } else {
+    throw Error('Unsupported OS. Only Android or iOS is allowed');
+  }
+};
+
+const dismissActionSheet = () => {
+  if (Platform.OS === 'ios') CrossActionSheet.dismissActionSheet();
+};
+
+const ActionSheet = {
+  showActionSheetWithOptions,
+  options,
+  dismissActionSheet,
+};
+
+export default ActionSheet;

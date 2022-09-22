@@ -1,18 +1,19 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-cross-action-sheet';
+import { StyleSheet, View, Text, Button, AppState } from 'react-native';
+import ActionSheet from 'react-native-cross-action-sheet';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  const onPress = () => {
+    ActionSheet.options({
+      options: [],
+      cancel: { text: 'Cancel', onPress: () => {} },
+    });
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Button title="Show Action Sheet" onPress={onPress} />
     </View>
   );
 }
