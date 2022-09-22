@@ -1,44 +1,26 @@
 package com.reactnativecrossactionsheet;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
+
+import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.module.model.ReactModuleInfo;
-import com.facebook.react.module.model.ReactModuleInfoProvider;
-import com.facebook.react.TurboReactPackage;
+import com.facebook.react.uimanager.ViewManager;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class CrossActionSheetPackage extends TurboReactPackage {
-
-  @Nullable
-  @Override
-  public NativeModule getModule(String name, ReactApplicationContext reactContext) {
-    if (name.equals(CrossActionSheetModule.NAME)) {
-        return new CrossActionSheetModule(reactContext, reactContext);
-    } else {
-        return null;
+public class CrossActionSheetPackage implements ReactPackage {
+    @Override
+    public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
+        List<NativeModule> modules = new ArrayList<>();
+        modules.add(new CrossActionSheetModule(reactContext));
+        return modules;
     }
-  }
 
-  @Override
-  public ReactModuleInfoProvider getReactModuleInfoProvider() {
-    return () -> {
-      final Map<String, ReactModuleInfo> moduleInfos = new HashMap<>();
-      boolean isTurboModule = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
-      moduleInfos.put(
-              CrossActionSheetModule.NAME,
-              new ReactModuleInfo(
-                      CrossActionSheetModule.NAME,
-                      CrossActionSheetModule.NAME,
-                      false, // canOverrideExistingModule
-                      false, // needsEagerInit
-                      true, // hasConstants
-                      false, // isCxxModule
-                      isTurboModule // isTurboModule
-      ));
-      return moduleInfos;
-    };
-  }
+    @Override
+    public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
+        return Collections.emptyList();
+    }
 }

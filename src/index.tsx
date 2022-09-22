@@ -99,14 +99,16 @@ const options = async (opt: ActionSheetOptions) => {
   }
 };
 
-const dismissActionSheet = () => {
-  if (Platform.OS === 'ios') CrossActionSheet.dismissActionSheet();
+const dismiss = () => {
+  console.log('dismissActionSheet ========= ');
+
+  CrossActionSheet.dismissActionSheet();
 };
 
 const ActionSheet = {
   showActionSheetWithOptions,
   options,
-  dismissActionSheet,
+  dismiss,
 };
 
 export default ActionSheet;
