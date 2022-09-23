@@ -30,16 +30,16 @@
 
 - (instancetype)init
 {
-  self = [super init];
-  if (self) {
-    _alertControllers = [NSMutableArray new];
-  }
-  return self;
+    self = [super init];
+    if (self) {
+        _alertControllers = [NSMutableArray new];
+    }
+    return self;
 }
 
 + (BOOL)requiresMainQueueSetup
 {
-  return NO;
+    return NO;
 }
 
 RCT_EXPORT_MODULE()
@@ -126,10 +126,10 @@ RCT_EXPORT_METHOD(showActionSheetWithOptions:(NSDictionary *)options
                                                             style:style
                                                           handler:^(__unused UIAlertAction *action){
             if (!callbackInvoked) {
-                                                                        callbackInvoked = true;
-                                                                        [self->_alertControllers removeObject:alertController];
-                                                                        callback(@[ @(localIndex) ]);
-                                                                      }
+                callbackInvoked = true;
+                [self->_alertControllers removeObject:alertController];
+                callback(@[ @(localIndex) ]);
+            }
             
         }]];
         
@@ -145,8 +145,8 @@ RCT_EXPORT_METHOD(showActionSheetWithOptions:(NSDictionary *)options
 RCT_EXPORT_METHOD(dismissActionSheet)
 {
     if (_alertControllers.count == 0) {
-        RCTLogWarn(@"Unable to dismiss action sheet");
-        NSLog(@"%@==================", _alertControllers);
+        return;
+        // RCTLogWarn(@"Unable to dismiss action sheet");
     }
     
     id _alertController = [_alertControllers lastObject];

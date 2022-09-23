@@ -100,8 +100,6 @@ const options = async (opt: ActionSheetOptions) => {
 };
 
 const dismiss = () => {
-  console.log('dismissActionSheet ========= ');
-
   CrossActionSheet.dismissActionSheet();
 };
 

@@ -127,7 +127,9 @@ public class CrossActionSheetModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void dismissActionSheet() {
+      if (isShowingDialog) {
         dialog.dismiss();
         isShowingDialog = false;
+      }
     }
 }
