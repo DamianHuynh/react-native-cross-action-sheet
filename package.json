@@ -1,5 +1,5 @@
 {
-  "name": "react-native-cross-action-sheet",
+  "name": "@dath/react-native-cross-action-sheet",
   "version": "0.1.0",
   "description": "test",
   "main": "lib/commonjs/index",
