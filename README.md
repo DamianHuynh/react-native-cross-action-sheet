@@ -11,9 +11,9 @@ Simple to use, static API, cross platform ActionSheets using **Native** Android 
 
 ## Quickstart
 
-yarn: `yarn add react-native-cross-action-sheet`
+yarn: `yarn add @tadth/react-native-cross-action-sheet`
 
-npm: `npm install react-native-cross-action-sheet`
+npm: `npm install @tadth/react-native-cross-action-sheet`
 
 ```typescript
 import ActionSheet from 'react-native-cross-actionsheet'
