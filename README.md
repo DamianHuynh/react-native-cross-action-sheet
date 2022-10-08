@@ -16,7 +16,7 @@ yarn: `yarn add @tadth/react-native-cross-action-sheet`
 npm: `npm install @tadth/react-native-cross-action-sheet`
 
 ```typescript
-import ActionSheet from 'react-native-cross-actionsheet'
+import ActionSheet from '@tadth/react-native-cross-action-sheet'
 
     ActionSheet.options({
       options: [
@@ -50,7 +50,7 @@ It's recommended to use the `ActionSheet.options` API as it is cleaner, more str
 
 ### Simple
 ```typescript
-import ActionSheet from 'react-native-cross-actionsheet'
+import ActionSheet from '@tadth/react-native-cross-action-sheet'
 ...
 ActionSheet.options({
   options: [
@@ -64,7 +64,7 @@ ActionSheet.options({
 
 ### Additional Options
 ```typescript
-import ActionSheet from 'react-native-cross-actionsheet'
+import ActionSheet from '@tadth/react-native-cross-action-sheet'
 ...
 ActionSheet.options({
     title: 'ActionSheet Title',
@@ -81,7 +81,7 @@ ActionSheet.options({
 
 ### Disable Cancel
 ```typescript
-import ActionSheet from 'react-native-cross-actionsheet'
+import ActionSheet from '@tadth/react-native-cross-action-sheet'
 ...
 ActionSheet.options({
     options: [
@@ -102,7 +102,7 @@ If you wish to stick with the traditional API, you can call `ActionSheet.showAct
 
 ### Simple
 ```typescript
-import ActionSheet from 'react-native-cross-actionsheet'
+import ActionSheet from '@tadth/react-native-cross-action-sheet'
 ...
 ActionSheet.showActionSheetWithOptions(
   { 
@@ -116,7 +116,7 @@ ActionSheet.showActionSheetWithOptions(
 
 ### Additional Options
 ```typescript
-import ActionSheet from 'react-native-cross-actionsheet'
+import ActionSheet from '@tadth/react-native-cross-action-sheet'
 ...
 ActionSheet.showActionSheetWithOptions(
   {
@@ -137,7 +137,7 @@ ActionSheet.showActionSheetWithOptions(
 Dismisses the most upper action sheet presented.
 
 ```typescript
-import ActionSheet from 'react-native-cross-actionsheet'
+import ActionSheet from '@tadth/react-native-cross-action-sheet'
 ...
 ActionSheet.dismiss()
 ```
